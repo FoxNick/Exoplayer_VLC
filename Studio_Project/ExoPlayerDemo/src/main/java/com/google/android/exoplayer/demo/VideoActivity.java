@@ -66,7 +66,9 @@ public class VideoActivity extends Activity implements SurfaceHolder.Callback,
         // Receive path to play from intent
         Intent intent = getIntent();
         if(intent==null|| intent.getExtras()==null || (mFilePath = intent.getExtras().getString(LOCATION))!=null)
-         mFilePath =LibVLC.PathToURI("/data/local/tmp/air_stunt_1.mp4");
+         {
+             mFilePath =LibVLC.PathToURI("/data/local/tmp/air_stunt_1.mp4");
+         }
          System.out.println("###########################################################");
          System.out.println("###########################################################");
          System.out.println("###########################################################");
@@ -233,12 +235,14 @@ public class VideoActivity extends Activity implements SurfaceHolder.Callback,
      *************/
     LibVLC getLibVLC(){
     	if(true)
-			try {
+			{
+			    try {
 				return com.exovlc.ExoVlcUtil.getVLC(this);
 			} catch (ExoPlaybackException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 				finish();
+			}
 			}
    throw new IllegalStateException();
     }

@@ -146,7 +146,9 @@ import java.util.List;
   public void setRendererEnabled(int index, boolean enabled) {
 	  System.out.println(">>>ExoPlayerImplInternal.setRendererEnabled("+index+","+enabled+")");
 	  if(!enabled)
-		  Thread.dumpStack();
+		  {
+		      Thread.dumpStack();
+		  }
       Log.d("ExoPlayerImplInternal", "#####setRendererEnabled(): "+Arrays.toString(Thread.currentThread().getStackTrace()));
     handler.obtainMessage(MSG_SET_RENDERER_ENABLED, index, enabled ? 1 : 0).sendToTarget();
   }
@@ -193,7 +195,9 @@ import java.util.List;
   public boolean handleMessage(Message msg) {
     try {
     	if(msg.what != MSG_DO_SOME_WORK)
-    	System.out.println(">>>> ExoPlayerImplInternal.handleMessage() msg = "+msg.what);
+    	{
+    	    System.out.println(">>>> ExoPlayerImplInternal.handleMessage() msg = "+msg.what);
+    	}
       switch (msg.what) {
         case MSG_PREPARE: {
           prepareInternal((TrackRenderer[]) msg.obj);
