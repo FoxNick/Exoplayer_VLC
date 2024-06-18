@@ -22,6 +22,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Pair;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -360,7 +362,7 @@ public class ManifestFetcher<T> implements Loader.Callback {
       String inputEncoding;
       InputStream inputStream = null;
       try {
-        URLConnection connection = configureConnection(new URL(manifestUrl));
+        URLConnection connection = configureConnection(Urls.create(manifestUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
         inputStream = connection.getInputStream();
         inputEncoding = connection.getContentEncoding();
         result = parser.parse(inputStream, inputEncoding, contentId,

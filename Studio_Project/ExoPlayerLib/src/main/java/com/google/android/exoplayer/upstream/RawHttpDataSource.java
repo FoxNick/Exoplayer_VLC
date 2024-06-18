@@ -22,6 +22,8 @@ import com.google.android.exoplayer.C;
 import com.google.android.exoplayer.util.Assertions;
 import com.google.android.exoplayer.util.Predicate;
 import com.google.android.exoplayer.util.Util;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -368,7 +370,7 @@ public class RawHttpDataSource implements DataSource {
   }
 
   private HttpURLConnection makeConnection(DataSpec dataSpec) throws IOException {
-    URL url = new URL(dataSpec.uri.toString());
+    URL url = Urls.create(dataSpec.uri.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     connection.setConnectTimeout(connectTimeoutMillis);
     connection.setReadTimeout(readTimeoutMillis);

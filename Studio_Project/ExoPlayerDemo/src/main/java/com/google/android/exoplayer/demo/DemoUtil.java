@@ -21,6 +21,8 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -78,7 +80,7 @@ public class DemoUtil {
       throws MalformedURLException, IOException {
     HttpURLConnection urlConnection = null;
     try {
-      urlConnection = (HttpURLConnection) new URL(url).openConnection();
+      urlConnection = (HttpURLConnection) Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).openConnection();
       urlConnection.setRequestMethod("POST");
       urlConnection.setDoOutput(data != null);
       urlConnection.setDoInput(true);
