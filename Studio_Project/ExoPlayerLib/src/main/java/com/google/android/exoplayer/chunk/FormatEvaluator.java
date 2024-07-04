@@ -16,6 +16,7 @@
 package com.google.android.exoplayer.chunk;
 
 import com.google.android.exoplayer.upstream.BandwidthMeter;
+import java.security.SecureRandom;
 
 import java.util.List;
 import java.util.Random;
@@ -129,7 +130,7 @@ public interface FormatEvaluator {
     private final Random random;
 
     public RandomEvaluator() {
-      this.random = new Random();
+      this.random = new SecureRandom();
     }
 
     @Override
