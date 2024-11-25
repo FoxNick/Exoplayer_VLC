@@ -282,7 +282,9 @@ public class LibVlcUtil {
             br = new BufferedReader(fileReader);
             line = br.readLine();
             if (line != null)
-                frequency = Float.parseFloat(line) / 1000.f; /* Convert to MHz */
+                {
+                    frequency = Float.parseFloat(line) / 1000.f;
+                } /* Convert to MHz */
         } catch(IOException ex) {
             Log.w(TAG, "Could not find maximum CPU frequency!");
         } catch(NumberFormatException e) {
@@ -380,7 +382,9 @@ public class LibVlcUtil {
         for (String libraryPath : libraryPaths) {
             lib = new File(libraryPath, "libvlcjni.so");
             if (lib.exists() && lib.canRead())
-                return lib;;
+                {
+                    return lib;
+                };
         }
         Log.e(TAG, "WARNING: Can't find shared library");
         return null;
