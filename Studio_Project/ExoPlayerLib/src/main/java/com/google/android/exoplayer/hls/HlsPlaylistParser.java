@@ -21,6 +21,7 @@ import com.google.android.exoplayer.hls.HlsMediaPlaylist.Segment;
 import com.google.android.exoplayer.util.ManifestParser;
 
 import android.net.Uri;
+import io.github.pixee.security.BoundedLineReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -90,7 +91,7 @@ public final class HlsPlaylistParser implements ManifestParser<HlsPlaylist> {
     Queue<String> extraLines = new LinkedList<String>();
     String line;
     try {
-      while ((line = reader.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         line = line.trim();
         if (line.isEmpty()) {
           // Do nothing.
@@ -259,7 +260,7 @@ public final class HlsPlaylistParser implements ManifestParser<HlsPlaylist> {
         next = extraLines.poll();
         return true;
       }
-      while ((next = reader.readLine()) != null) {
+      while ((next = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         next = next.trim();
         if (!next.isEmpty()) {
           return true;

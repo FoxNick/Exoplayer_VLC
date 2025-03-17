@@ -19,6 +19,7 @@ import com.google.android.exoplayer.C;
 import com.google.android.exoplayer.ParserException;
 import com.google.android.exoplayer.text.SubtitleParser;
 import com.google.android.exoplayer.util.MimeTypes;
+import io.github.pixee.security.BoundedLineReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -91,7 +92,7 @@ public class WebvttParser implements SubtitleParser {
     String line;
 
     // file should start with "WEBVTT" on the first line or "EXO-HEADER"
-    line = webvttData.readLine();
+    line = BoundedLineReader.readLine(webvttData, 5_000_000);
     if (line == null) {
       throw new ParserException("Expected WEBVTT or EXO-HEADER. Got null");
     }
@@ -104,7 +105,7 @@ public class WebvttParser implements SubtitleParser {
       }
 
       // read the next line, which should now be WEBVTT
-      line = webvttData.readLine();
+      line = BoundedLineReader.readLine(webvttData, 5_000_000);
       if (line == null) {
         throw new ParserException("Expected WEBVTT. Got null");
       }
@@ -116,7 +117,7 @@ public class WebvttParser implements SubtitleParser {
 
     // parse the remainder of the header
     while (true) {
-      line = webvttData.readLine();
+      line = BoundedLineReader.readLine(webvttData, 5_000_000);
       if (line == null) {
         // we reached EOF before finishing the header
         throw new ParserException("Expected an empty line after webvtt header");
@@ -144,12 +145,12 @@ public class WebvttParser implements SubtitleParser {
     }
 
     // process the cues and text
-    while ((line = webvttData.readLine()) != null) {
+    while ((line = BoundedLineReader.readLine(webvttData, 5_000_000)) != null) {
       // parse the cue identifier (if present) {
       Matcher matcher = WEBVTT_CUE_IDENTIFIER.matcher(line);
       if (matcher.find()) {
         // ignore the identifier (we currently don't use it) and read the next line
-        line = webvttData.readLine();
+        line = BoundedLineReader.readLine(webvttData, 5_000_000);
       }
 
       // parse the cue timestamps
@@ -173,7 +174,7 @@ public class WebvttParser implements SubtitleParser {
       }
 
       // parse text
-      while (((line = webvttData.readLine()) != null) && (!line.isEmpty())) {
+      while (((line = BoundedLineReader.readLine(webvttData, 5_000_000)) != null) && (!line.isEmpty())) {
         text += processCueText(line.trim()) + "\n";
       }
 
